@@ -5,6 +5,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
+      <Text>Cole is editing the default app.js provided by Expo. This text shows Cole can commit to the repo.</Text>
       <Text style={styles.bigpurpletext}>I'm editing the default app.js provided by Expo. This text is large and purple.</Text>
       <StatusBar style="auto" />
     </View>
