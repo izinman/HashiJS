@@ -1,5 +1,5 @@
 {
-  "name": "hashi-js",
+  "name": "hash-js",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -18,7 +18,9 @@
     "@expo/metro-runtime": "~3.1.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.45",
+    "typescript": "^5.1.3"
   },
   "private": true
 }

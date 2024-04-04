@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hashi-js",
-    "slug": "hashi-js",
+    "name": "hash-js",
+    "slug": "hash-js",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

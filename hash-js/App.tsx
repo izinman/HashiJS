@@ -4,9 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text>Cole is editing the default app.js provided by Expo. This text shows Cole can commit to the repo.</Text>
-      <Text style={styles.bigpurpletext}>I'm editing the default app.js provided by Expo. This text is large and purple.</Text>
+      <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -19,8 +17,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  bigpurpletext: {
-    color: '#800080',
-    fontSize: 72,
-  }
 });
