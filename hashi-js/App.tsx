@@ -1,22 +1,31 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import "bootstrap/dist/css/bootstrap.css";
+import { ImageBackground, StyleSheet, View } from "react-native";
 import Menu from "./Menu";
+
+const image = { uri: "assets/hashi-background.jpeg" };
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Menu />
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <View
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "30%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Menu />
+          <StatusBar style="auto" />
+        </View>
+      </ImageBackground>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  image: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
