@@ -1,30 +1,28 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
-function Menu() {
+export function PuzzleMenuBar() {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.header}>Hashiwokakero</Text>
-
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Play")} // Open PuzzleView
+          onPress={() => console.log("Undo")} // how to wire this up with method on puzzle i.e. puzzle.undo()
         >
-          <Text style={styles.buttonText}>Play</Text>
+          <Text style={styles.buttonText}>Undo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Tutorial")} // Open TutorialView
+          onPress={() => console.log("Redo")} // puzzle.redo()
         >
-          <Text style={styles.buttonText}>Tutorial</Text>
+          <Text style={styles.buttonText}>Redo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Settings")} // etc...
+          onPress={() => console.log("Start over")} // puzzle.startOver()
         >
-          <Text style={styles.buttonText}>Settings</Text>
+          <Text style={styles.buttonText}>Start over</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -41,6 +39,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection: "row",
     justifyContent: "space-between",
     maxWidth: 300,
     margin: "auto",
@@ -57,5 +56,3 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
-
-export default Menu;

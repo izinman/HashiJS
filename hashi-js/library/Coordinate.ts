@@ -1,4 +1,4 @@
-class Coordinate {
+export class Coordinate {
   x: number = 0;
   y: number = 0;
   constructor(x: number, y: number) {

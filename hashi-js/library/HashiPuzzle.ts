@@ -1,4 +1,8 @@
-class HashiPuzzle {
+import { Coordinate } from "./Coordinate";
+import { HashiEdge } from "./HashiEdge";
+import { HashiNode } from "./HashiNode";
+
+export class HashiPuzzle {
   width: number;
   height: number;
   nodes: HashiNode[][];
@@ -14,6 +18,10 @@ class HashiPuzzle {
     this.height = height;
     this.nodes = this.parseInputPuzzle(inputPuzzle);
     this.solution = this.parseInputSolution(inputSolution);
+    this.currentEdges = this.initializeEdges();
+  }
+
+  startOver() {
     this.currentEdges = this.initializeEdges();
   }
 
