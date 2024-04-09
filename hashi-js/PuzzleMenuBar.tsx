@@ -1,26 +1,36 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { HashiPuzzle } from "./library/HashiPuzzle";
 
-export function PuzzleMenuBar() {
+export function PuzzleMenuBar({ puzzle }: { puzzle: HashiPuzzle }) {
   return (
     <>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Undo")} // how to wire this up with method on puzzle i.e. puzzle.undo()
+          onPress={() => {
+            console.log("Undo on menu bar clicked");
+            puzzle.undo();
+          }}
         >
           <Text style={styles.buttonText}>Undo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Redo")} // puzzle.redo()
+          onPress={() => {
+            console.log("Redo on menu bar clicked");
+            puzzle.redo();
+          }}
         >
           <Text style={styles.buttonText}>Redo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => console.log("Start over")} // puzzle.startOver()
+          onPress={() => {
+            console.log("Start over on menu bar clicked");
+            puzzle.startOver();
+          }}
         >
           <Text style={styles.buttonText}>Start over</Text>
         </TouchableOpacity>
@@ -30,10 +40,6 @@ export function PuzzleMenuBar() {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 40,
-    paddingBottom: 20,
-  },
   buttonText: {
     fontSize: 20,
   },

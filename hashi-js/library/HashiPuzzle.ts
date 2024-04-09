@@ -21,11 +21,19 @@ export class HashiPuzzle {
     this.currentEdges = this.initializeEdges();
   }
 
+  undo() {
+    console.log("undo on current puzzle");
+  }
+
+  redo() {
+    console.log("redo on puzzle");
+  }
+
   startOver() {
     this.currentEdges = this.initializeEdges();
   }
 
-  checkSolved(): boolean {
+  isSolved(): boolean {
     for (let i = 0; i < this.height; ++i) {
       for (let j = 0; j < this.width; ++j) {
         if (this.solution[i][j] != this.currentEdges[i][j]) {
