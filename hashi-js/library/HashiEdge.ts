@@ -1,4 +1,4 @@
-enum HashiEdge {
+export enum HashiEdge {
   None,
   SingleVertical,
   DoubleVertical,
