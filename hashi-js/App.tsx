@@ -1,12 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Menu from "./Menu";
+import HashiPuzzleRendered from "./HashiPuzzleRendered";
 
 const image = { uri: "assets/hashi-background.jpeg" };
 
 export default function App() {
   return (
     <>
+      {/* <HashiPuzzleRendered /> // comment out the ImageBackground and uncomment this line to view the puzzle */}
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <View
           style={{
