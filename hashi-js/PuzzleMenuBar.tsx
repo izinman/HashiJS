@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     maxWidth: 300,
+    maxHeight: 100,
     margin: "auto",
     backgroundColor: "#8a9da1",
     padding: 10,

@@ -1,15 +1,17 @@
-import { HashiPuzzleRendered } from "./HashiPuzzleRendered";
+import HashiPuzzleRendered from "./HashiPuzzleRendered";
 import { PuzzleMenuBar } from "./PuzzleMenuBar";
-import { HashiPuzzle } from "./library/HashiPuzzle";
 import { StyleSheet, View } from "react-native";
+import { HashiPuzzle } from "./library/HashiPuzzle";
 
-export function PuzzleView(puzzleObject: HashiPuzzle) {
+export function PuzzleView() {
+  var currentPuzzle = HashiPuzzle.createSamplePuzzle();
+
   // TODO: Make sure the puzzle is passed in correctly - props vs state? re-render behavior?
   return (
     <>
       <View style={styles.container}>
-        <PuzzleMenuBar puzzle={puzzleObject} />
-        <HashiPuzzleRendered puzzle={puzzleObject} />
+        <PuzzleMenuBar puzzle={currentPuzzle} />
+        <HashiPuzzleRendered />
       </View>
     </>
   );

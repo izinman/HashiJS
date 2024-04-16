@@ -1,32 +1,55 @@
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
 
-function Menu() {
+const image = { uri: "assets/hashi-background.jpeg" };
+
+function Menu({ navigation }) {
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.header}>Hashiwokakero</Text>
+      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <View
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "30%",
+            transform: "translate(-50%, -50%)",
+          }}
+        ></View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Play")} // Open PuzzleView
-        >
-          <Text style={styles.buttonText}>Play</Text>
-        </TouchableOpacity>
+        <View style={styles.container}>
+          <Text style={styles.header}>Hashiwokakero</Text>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Tutorial")} // Open TutorialView
-        >
-          <Text style={styles.buttonText}>Tutorial</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              console.log("Play");
+              navigation.push("Puzzle");
+            }} // Open PuzzleView
+          >
+            <Text style={styles.buttonText}>Play</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => console.log("Settings")} // etc...
-        >
-          <Text style={styles.buttonText}>Settings</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("Tutorial")} // Open TutorialView
+          >
+            <Text style={styles.buttonText}>Tutorial</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("Settings")} // etc...
+          >
+            <Text style={styles.buttonText}>Settings</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </>
   );
 }
@@ -55,6 +78,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 30,
     marginVertical: 10,
+  },
+  image: {
+    flex: 1,
   },
 });
 

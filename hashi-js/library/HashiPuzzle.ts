@@ -16,8 +16,12 @@ export class HashiPuzzle {
   ) {
     this.width = width;
     this.height = height;
-    this.nodes = this.parseInputPuzzle(inputPuzzle);
-    this.solution = this.parseInputSolution(inputSolution);
+    if (inputPuzzle != "") {
+      this.nodes = this.parseInputPuzzle(inputPuzzle);
+    }
+    if (inputSolution != "") {
+      this.solution = this.parseInputSolution(inputSolution);
+    }
     this.currentEdges = this.initializeEdges();
   }
 
@@ -109,7 +113,9 @@ export class HashiPuzzle {
 
     let inputArray = inputSolution.split(/\s+/);
     if (inputArray.length != this.width * this.height) {
-      throw new Error("Input dimensions were not parsed correctly");
+      throw new Error(
+        `Input dimensions were not parsed correctly. Got ${inputArray.length}, when height is ${this.height} and width is ${this.width}`
+      );
     }
 
     for (let i = 0; i < inputArray.length; ++i) {
@@ -132,7 +138,7 @@ export class HashiPuzzle {
             `Unexpected input when parsing solution: ${inputArray[i]}`
           );
       }
-      let x = i / this.height;
+      let x = Math.floor(i / this.height);
       let y = i % this.width;
       edges[x][y] = edgeType;
     }
@@ -152,14 +158,17 @@ export class HashiPuzzle {
 
     let inputArray = inputPuzzle.split(/\s+/);
     if (inputArray.length != this.width * this.height) {
-      throw new Error("Input dimensions were not parsed correctly");
+      throw new Error(
+        `Input dimensions were not parsed correctly. Got ${inputArray.length}, when height is ${this.height} and width is ${this.width}`
+      );
     }
 
     for (let i = 0; i < inputArray.length; ++i) {
       if (inputArray[i] != "-") {
-        let x = i / this.height;
+        let x = Math.floor(i / this.height);
         let y = i % this.width;
-        newNodes[x][y] = new HashiNode(x, y, parseInt(inputArray[i], 10));
+        var newNode = new HashiNode(parseInt(inputArray[i]), x, y);
+        newNodes[x][y] = newNode;
       }
     }
 
@@ -189,7 +198,7 @@ export class HashiPuzzle {
        a - 1 1 - 2 - a a 
        - 2 2 - 1 - a a - 
        a - - 1 1 1 - a - 
-       - 2 2 2 2 - 1 - - `
+       - 2 2 2 2 - 1 - -`
     );
   }
 }

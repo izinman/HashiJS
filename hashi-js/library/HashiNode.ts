@@ -1,4 +1,4 @@
-class HashiNode {
+export class HashiNode {
   goalNumber: number;
   xPos: number;
   yPos: number;

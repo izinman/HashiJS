@@ -1,35 +1,28 @@
-import { StatusBar } from "expo-status-bar";
 import { StrictMode } from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 import Menu from "./Menu";
 import HashiPuzzleRendered from "./HashiPuzzleRendered";
+import { PuzzleView } from "./PuzzleView";
+import { HashiPuzzle } from "./library/HashiPuzzle";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StatusBar } from "expo-status-bar";
 
-const image = { uri: "assets/hashi-background.jpeg" };
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <>
-      <StrictMode>
-        <HashiPuzzleRendered />
-        {/* comment out the ImageBackground and uncomment this line to view the puzzle */}
-        {/* <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <View
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "30%",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <Menu />
-          <StatusBar style="auto" />
-        </View>
-      </ImageBackground> */}
-      </StrictMode>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Main Menu" component={Menu} />
+          <Stack.Screen name="Puzzle" component={PuzzleView} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <StatusBar style="auto" />
     </>
   );
 }
-
 const styles = StyleSheet.create({
   image: {
     flex: 1,
