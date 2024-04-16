@@ -6,25 +6,29 @@ import {
   ViewStyle,
   DimensionValue,
 } from "react-native";
+import { PointType } from "./PointType";
 
 interface Props {
   style: StyleProp<ViewStyle>;
   goalNumber?: number;
-  nodeType: string;
+  pointType?: PointType;
 }
 
-function GridPoint({ style, goalNumber, nodeType }: Props) {
+function GridPointView({ style, goalNumber, pointType }: Props) {
   let lineLength: DimensionValue = goalNumber ? "25%" : "50%";
   return (
     <View style={style}>
       {goalNumber ? (
         <View style={styles.node}>
-          <Text>{goalNumber}</Text>
+          <Text style={{ userSelect: "none" }}>{goalNumber}</Text>
         </View>
       ) : null}
 
-      {/* Change To Enums */}
-      {!["topLeft", "bottomLeft", "firstColumn"].includes(nodeType) ? (
+      {![
+        PointType.TOP_LEFT,
+        PointType.BOTTOM_LEFT,
+        PointType.FIRST_COLUMN,
+      ].includes(pointType) ? (
         // Left Line
         <View
           style={{
@@ -37,7 +41,11 @@ function GridPoint({ style, goalNumber, nodeType }: Props) {
         />
       ) : null}
 
-      {!["topRight", "bottomRight", "lastColumn"].includes(nodeType) ? (
+      {![
+        PointType.TOP_RIGHT,
+        PointType.BOTTOM_RIGHT,
+        PointType.LAST_COLUMN,
+      ].includes(pointType) ? (
         // Right Line
         <View
           style={{
@@ -50,7 +58,9 @@ function GridPoint({ style, goalNumber, nodeType }: Props) {
         />
       ) : null}
 
-      {!["topLeft", "topRight", "firstRow"].includes(nodeType) ? (
+      {![PointType.TOP_LEFT, PointType.TOP_RIGHT, PointType.FIRST_ROW].includes(
+        pointType
+      ) ? (
         // Up Line
         <View
           style={{
@@ -64,7 +74,11 @@ function GridPoint({ style, goalNumber, nodeType }: Props) {
         />
       ) : null}
 
-      {!["bottomRight", "bottomLeft", "lastRow"].includes(nodeType) ? (
+      {![
+        PointType.BOTTOM_RIGHT,
+        PointType.BOTTOM_LEFT,
+        PointType.LAST_ROW,
+      ].includes(pointType) ? (
         // Down Line
         <View
           style={{
@@ -94,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GridPoint;
+export default GridPointView;

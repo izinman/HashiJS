@@ -1,65 +1,89 @@
 import { Dimensions, FlatList, View, StyleSheet } from "react-native";
 import { HashiPuzzle } from "./library/HashiPuzzle";
-import GridPoint from "./GridPoint";
-import { PuzzleMenuBar } from "./PuzzleMenuBar";
+import GridPointView from "./GridPointView";
+import { PointType } from "./PointType";
 
 interface Props {
   puzzle: HashiPuzzle;
 }
 
-// function HashiPuzzleRendered(props: Props) {
-function HashiPuzzleRendered() {
-  let puzzleWidth = 9;
-  let puzzleHeight = 9;
-  let cells = [];
+function HashiPuzzleRendered({ puzzle }: Props) {
+  let puzzleWidth = puzzle.width;
+  let puzzleHeight = puzzle.height;
+  let points = [];
 
-  for (let i = 0; i < puzzleHeight + 1; i++) {
-    for (let j = 0; j < puzzleWidth + 1; j++) {
+  for (let i = 0; i < puzzleHeight; i++) {
+    for (let j = 0; j < puzzleWidth; j++) {
+      const hashiNode = puzzle.nodes[i][j];
+      const goalNumber = hashiNode ? hashiNode.goalNumber : null;
       if (i == 0 && j == 0) {
-        cells.push({ goalNumber: null, nodeType: "topLeft" });
-      } else if (i == 0 && j == puzzleWidth) {
-        cells.push({ goalNumber: null, nodeType: "topRight" });
-      } else if (i == puzzleHeight && j == 0) {
-        cells.push({ goalNumber: null, nodeType: "bottomLeft" });
-      } else if (i == puzzleHeight && j == puzzleWidth) {
-        cells.push({ goalNumber: null, nodeType: "bottomRight" });
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.TOP_LEFT,
+        });
+      } else if (i == 0 && j == puzzleWidth - 1) {
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.TOP_RIGHT,
+        });
+      } else if (i == puzzleHeight - 1 && j == 0) {
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.BOTTOM_LEFT,
+        });
+      } else if (i == puzzleHeight - 1 && j == puzzleWidth - 1) {
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.BOTTOM_RIGHT,
+        });
       } else if (i == 0) {
-        cells.push({ goalNumber: null, nodeType: "firstRow" });
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.FIRST_ROW,
+        });
       } else if (j == 0) {
-        cells.push({ goalNumber: null, nodeType: "firstColumn" });
-      } else if (i == puzzleHeight) {
-        cells.push({ goalNumber: null, nodeType: "lastRow" });
-      } else if (j == puzzleWidth) {
-        cells.push({ goalNumber: null, nodeType: "lastColumn" });
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.FIRST_COLUMN,
+        });
+      } else if (i == puzzleHeight - 1) {
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.LAST_ROW,
+        });
+      } else if (j == puzzleWidth - 1) {
+        points.push({
+          goalNumber: goalNumber,
+          pointType: PointType.LAST_COLUMN,
+        });
       } else {
-        cells.push({ goalNumber: null, nodeType: null });
+        points.push({ goalNumber: goalNumber });
       }
     }
   }
 
-  let cellMaxWidth = (Dimensions.get("window").width - 100) / (puzzleWidth + 1);
-  let cellMaxHeight =
-    (Dimensions.get("window").height - 100) / (puzzleHeight + 1);
-  let sideLength = Math.min(cellMaxHeight, cellMaxWidth);
+  let pointMaxWidth = (Dimensions.get("window").width - 100) / puzzleWidth;
+  let pointMaxHeight = (Dimensions.get("window").height - 300) / puzzleHeight;
+  let sideLength = Math.min(pointMaxHeight, pointMaxWidth);
 
   return (
     <>
       <View style={styles.container}>
         <FlatList
-          data={cells}
-          renderItem={(cell) => (
-            <GridPoint
+          data={points}
+          renderItem={(point) => (
+            <GridPointView
               style={{
                 width: sideLength,
                 height: sideLength,
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              goalNumber={cell.item.goalNumber}
-              nodeType={cell.item.nodeType}
+              goalNumber={point.item.goalNumber}
+              pointType={point.item.pointType}
             />
           )}
-          numColumns={puzzleWidth + 1}
+          numColumns={puzzleWidth}
           scrollEnabled={false}
         />
       </View>

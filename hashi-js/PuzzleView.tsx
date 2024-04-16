@@ -11,7 +11,7 @@ export function PuzzleView() {
     <>
       <View style={styles.container}>
         <PuzzleMenuBar puzzle={currentPuzzle} />
-        <HashiPuzzleRendered />
+        <HashiPuzzleRendered puzzle={currentPuzzle} />
       </View>
     </>
   );
