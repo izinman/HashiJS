@@ -1,5 +1,6 @@
 import { Dimensions, Text, FlatList, View, StyleSheet } from "react-native";
 import { HashiPuzzle } from "./library/HashiPuzzle";
+import GridPoint from "./GridPoint";
 
 interface Props {
   puzzle: HashiPuzzle;
@@ -11,7 +12,7 @@ function HashiPuzzleRendered() {
   let puzzleHeight = 9;
   let cells = [];
   for (let i = 0; i < puzzleWidth * puzzleHeight; i++) {
-    cells.push({});
+    cells.push(1);
   }
 
   let cellMaxWidth = (Dimensions.get("window").width - 200) / puzzleWidth;
@@ -23,14 +24,17 @@ function HashiPuzzleRendered() {
       <View style={styles.container}>
         <FlatList
           data={cells}
-          renderItem={() => (
-            <View
+          renderItem={(cell) => (
+            <GridPoint
               style={{
                 borderColor: "black",
                 borderWidth: 0.5,
                 width: sideLength,
                 height: sideLength,
+                justifyContent: "center",
+                alignItems: "center",
               }}
+              goalNumber={cell.item}
             />
           )}
           numColumns={puzzleWidth}
