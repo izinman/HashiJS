@@ -20,22 +20,9 @@ function HashiPuzzleRendered({ puzzle }: Props) {
       <View style={styles.container}>
         <FlatList
           data={puzzle.nodes.flat()}
-          renderItem={(point) =>
-            point.item.goalNumber != -1 ? (
-              <GridPointView
-                style={{
-                  width: sideLength,
-                  height: sideLength,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                goalNumber={point.item.goalNumber}
-                pointType={point.item.nodePosition}
-              />
-            ) : (
-              <></>
-            )
-          }
+          renderItem={(point) => (
+            <GridPointView sideLength={sideLength} node={point.item} />
+          )}
           numColumns={puzzleWidth}
           scrollEnabled={false}
         />

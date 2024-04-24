@@ -7,20 +7,29 @@ import {
   DimensionValue,
 } from "react-native";
 import { NodePosition } from "./library/NodePosition";
+import { HashiNode } from "./library/HashiNode";
 
-interface Props {
-  style: StyleProp<ViewStyle>;
-  goalNumber?: number;
-  pointType?: NodePosition;
-}
-
-function GridPointView({ style, goalNumber, pointType }: Props) {
-  let lineLength: DimensionValue = goalNumber ? "25%" : "50%";
+function GridPointView({
+  sideLength,
+  node,
+}: {
+  sideLength: number;
+  node: HashiNode;
+}) {
+  let lineLength: DimensionValue = node.goalNumber ? "25%" : "50%";
   return (
-    <View style={style}>
-      {goalNumber ? (
+    <View
+      style={{
+        ...styles.parent,
+        ...{
+          width: sideLength,
+          height: sideLength,
+        },
+      }}
+    >
+      {node.goalNumber ? (
         <View style={styles.node}>
-          <Text style={{ userSelect: "none" }}>{goalNumber}</Text>
+          <Text style={{ userSelect: "none" }}>{node.goalNumber}</Text>
         </View>
       ) : null}
 
@@ -28,15 +37,16 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
         NodePosition.TOP_LEFT,
         NodePosition.BOTTOM_LEFT,
         NodePosition.FIRST_COLUMN,
-      ].includes(pointType) ? (
+      ].includes(node.nodePosition) ? (
         // Left Line
         <View
           style={{
-            position: "absolute",
-            left: 0,
-            height: 1,
-            width: lineLength,
-            backgroundColor: "black",
+            ...styles.backgroundLine,
+            ...{
+              left: 0,
+              height: 1,
+              width: lineLength,
+            },
           }}
         />
       ) : null}
@@ -45,15 +55,16 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
         NodePosition.TOP_RIGHT,
         NodePosition.BOTTOM_RIGHT,
         NodePosition.LAST_COLUMN,
-      ].includes(pointType) ? (
+      ].includes(node.nodePosition) ? (
         // Right Line
         <View
           style={{
-            position: "absolute",
-            right: 0,
-            height: 1,
-            width: lineLength,
-            backgroundColor: "black",
+            ...styles.backgroundLine,
+            ...{
+              right: 0,
+              height: 1,
+              width: lineLength,
+            },
           }}
         />
       ) : null}
@@ -62,16 +73,17 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
         NodePosition.TOP_LEFT,
         NodePosition.TOP_RIGHT,
         NodePosition.FIRST_ROW,
-      ].includes(pointType) ? (
+      ].includes(node.nodePosition) ? (
         // Up Line
         <View
           style={{
-            position: "absolute",
-            left: "50%",
-            top: 0,
-            height: lineLength,
-            width: 1,
-            backgroundColor: "black",
+            ...styles.backgroundLine,
+            ...{
+              left: "50%",
+              top: 0,
+              height: lineLength,
+              width: 1,
+            },
           }}
         />
       ) : null}
@@ -80,16 +92,17 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
         NodePosition.BOTTOM_RIGHT,
         NodePosition.BOTTOM_LEFT,
         NodePosition.LAST_ROW,
-      ].includes(pointType) ? (
+      ].includes(node.nodePosition) ? (
         // Down Line
         <View
           style={{
-            position: "absolute",
-            left: "50%",
-            bottom: 0,
-            height: lineLength,
-            width: 1,
-            backgroundColor: "black",
+            ...styles.backgroundLine,
+            ...{
+              left: "50%",
+              bottom: 0,
+              height: lineLength,
+              width: 1,
+            },
           }}
         />
       ) : null}
@@ -98,6 +111,10 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
 }
 
 const styles = StyleSheet.create({
+  parent: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   node: {
     textAlign: "center",
     height: "50%",
@@ -107,6 +124,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  backgroundLine: {
+    position: "absolute",
+    backgroundColor: "black",
+    opacity: 0.4,
   },
 });
 
