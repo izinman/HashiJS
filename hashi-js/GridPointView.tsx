@@ -6,12 +6,12 @@ import {
   ViewStyle,
   DimensionValue,
 } from "react-native";
-import { PointType } from "./PointType";
+import { NodePosition } from "./library/NodePosition";
 
 interface Props {
   style: StyleProp<ViewStyle>;
   goalNumber?: number;
-  pointType?: PointType;
+  pointType?: NodePosition;
 }
 
 function GridPointView({ style, goalNumber, pointType }: Props) {
@@ -25,9 +25,9 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
       ) : null}
 
       {![
-        PointType.TOP_LEFT,
-        PointType.BOTTOM_LEFT,
-        PointType.FIRST_COLUMN,
+        NodePosition.TOP_LEFT,
+        NodePosition.BOTTOM_LEFT,
+        NodePosition.FIRST_COLUMN,
       ].includes(pointType) ? (
         // Left Line
         <View
@@ -42,9 +42,9 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
       ) : null}
 
       {![
-        PointType.TOP_RIGHT,
-        PointType.BOTTOM_RIGHT,
-        PointType.LAST_COLUMN,
+        NodePosition.TOP_RIGHT,
+        NodePosition.BOTTOM_RIGHT,
+        NodePosition.LAST_COLUMN,
       ].includes(pointType) ? (
         // Right Line
         <View
@@ -58,9 +58,11 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
         />
       ) : null}
 
-      {![PointType.TOP_LEFT, PointType.TOP_RIGHT, PointType.FIRST_ROW].includes(
-        pointType
-      ) ? (
+      {![
+        NodePosition.TOP_LEFT,
+        NodePosition.TOP_RIGHT,
+        NodePosition.FIRST_ROW,
+      ].includes(pointType) ? (
         // Up Line
         <View
           style={{
@@ -75,9 +77,9 @@ function GridPointView({ style, goalNumber, pointType }: Props) {
       ) : null}
 
       {![
-        PointType.BOTTOM_RIGHT,
-        PointType.BOTTOM_LEFT,
-        PointType.LAST_ROW,
+        NodePosition.BOTTOM_RIGHT,
+        NodePosition.BOTTOM_LEFT,
+        NodePosition.LAST_ROW,
       ].includes(pointType) ? (
         // Down Line
         <View

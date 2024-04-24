@@ -1,4 +1,4 @@
-export enum PointType {
+export enum NodePosition {
   TOP_LEFT,
   TOP_RIGHT,
   BOTTOM_LEFT,
@@ -7,4 +7,5 @@ export enum PointType {
   LAST_ROW,
   FIRST_COLUMN,
   LAST_COLUMN,
+  MIDDLE,
 }

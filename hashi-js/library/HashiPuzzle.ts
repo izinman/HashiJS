@@ -1,6 +1,7 @@
 import { Coordinate } from "./Coordinate";
 import { HashiEdge } from "./HashiEdge";
 import { HashiNode } from "./HashiNode";
+import { NodePosition } from "./NodePosition";
 
 export class HashiPuzzle {
   width: number;
@@ -164,15 +165,46 @@ export class HashiPuzzle {
     }
 
     for (let i = 0; i < inputArray.length; ++i) {
+      let x = i % this.width;
+      let y = Math.floor(i / this.height);
+      var nodePos = this.getNodePos(x, y);
       if (inputArray[i] != "-") {
-        let x = Math.floor(i / this.height);
-        let y = i % this.width;
-        var newNode = new HashiNode(parseInt(inputArray[i]), x, y);
-        newNodes[x][y] = newNode;
+        var newNode = new HashiNode(parseInt(inputArray[i]), x, y, nodePos);
+        newNodes[y][x] = newNode;
+      } else {
+        newNodes[y][x] = new HashiNode(0, x, y, nodePos);
       }
     }
 
     return newNodes;
+  }
+
+  getNodePos(x: number, y: number): NodePosition {
+    if (x == 0) {
+      if (y == 0) {
+        return NodePosition.TOP_LEFT;
+      } else if (y == this.height - 1) {
+        return NodePosition.BOTTOM_LEFT;
+      } else {
+        return NodePosition.FIRST_COLUMN;
+      }
+    } else if (x == this.width - 1) {
+      if (y == 0) {
+        return NodePosition.TOP_RIGHT;
+      } else if (y == this.height - 1) {
+        return NodePosition.BOTTOM_RIGHT;
+      } else {
+        return NodePosition.LAST_COLUMN;
+      }
+    } else {
+      if (y == 0) {
+        return NodePosition.FIRST_ROW;
+      } else if (y == this.height - 1) {
+        return NodePosition.LAST_ROW;
+      } else {
+        return NodePosition.MIDDLE;
+      }
+    }
   }
 
   static createSamplePuzzle(): HashiPuzzle {
