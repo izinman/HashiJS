@@ -27,17 +27,17 @@ function GridPointView({
         },
       }}
     >
-      {node.goalNumber ? (
+      {node.goalNumber && (
         <View style={styles.node}>
           <Text style={{ userSelect: "none" }}>{node.goalNumber}</Text>
         </View>
-      ) : null}
+      )}
 
       {![
         NodePosition.TOP_LEFT,
         NodePosition.BOTTOM_LEFT,
         NodePosition.FIRST_COLUMN,
-      ].includes(node.nodePosition) ? (
+      ].includes(node.nodePosition) && (
         // Left Line
         <View
           style={{
@@ -49,13 +49,13 @@ function GridPointView({
             },
           }}
         />
-      ) : null}
+      )}
 
       {![
         NodePosition.TOP_RIGHT,
         NodePosition.BOTTOM_RIGHT,
         NodePosition.LAST_COLUMN,
-      ].includes(node.nodePosition) ? (
+      ].includes(node.nodePosition) && (
         // Right Line
         <View
           style={{
@@ -67,13 +67,13 @@ function GridPointView({
             },
           }}
         />
-      ) : null}
+      )}
 
       {![
         NodePosition.TOP_LEFT,
         NodePosition.TOP_RIGHT,
         NodePosition.FIRST_ROW,
-      ].includes(node.nodePosition) ? (
+      ].includes(node.nodePosition) && (
         // Up Line
         <View
           style={{
@@ -86,13 +86,13 @@ function GridPointView({
             },
           }}
         />
-      ) : null}
+      )}
 
       {![
         NodePosition.BOTTOM_RIGHT,
         NodePosition.BOTTOM_LEFT,
         NodePosition.LAST_ROW,
-      ].includes(node.nodePosition) ? (
+      ].includes(node.nodePosition) && (
         // Down Line
         <View
           style={{
@@ -105,7 +105,7 @@ function GridPointView({
             },
           }}
         />
-      ) : null}
+      )}
     </View>
   );
 }
