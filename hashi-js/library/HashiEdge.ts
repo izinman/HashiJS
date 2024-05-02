@@ -1,7 +1,7 @@
 export enum HashiEdge {
-  None,
-  SingleVertical,
-  DoubleVertical,
-  SingleHorizontal,
-  DoubleHorizontal,
+  NONE,
+  SINGLE_VERTICAL,
+  DOUBLE_VERTICAL,
+  SINGLE_HORIZONTAL,
+  DOUBLE_HORIZONTAL,
 }

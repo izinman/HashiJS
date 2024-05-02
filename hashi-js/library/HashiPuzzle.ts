@@ -95,7 +95,7 @@ export class HashiPuzzle {
     for (let i = 0; i < this.height; ++i) {
       edges[i] = new Array<HashiEdge>(this.width);
       for (let j = 0; j < this.width; ++j) {
-        edges[i][j] = HashiEdge.None;
+        edges[i][j] = HashiEdge.NONE;
       }
     }
     return edges;
@@ -120,18 +120,18 @@ export class HashiPuzzle {
     }
 
     for (let i = 0; i < inputArray.length; ++i) {
-      var edgeType = HashiEdge.None;
+      var edgeType = HashiEdge.NONE;
       switch (inputArray[i]) {
         case "1":
-          edgeType = HashiEdge.SingleHorizontal;
+          edgeType = HashiEdge.SINGLE_HORIZONTAL;
           break;
         case "2":
-          edgeType = HashiEdge.DoubleHorizontal;
+          edgeType = HashiEdge.DOUBLE_HORIZONTAL;
         case "a":
-          edgeType = HashiEdge.SingleVertical;
+          edgeType = HashiEdge.SINGLE_VERTICAL;
           break;
         case "b":
-          edgeType = HashiEdge.DoubleVertical;
+          edgeType = HashiEdge.DOUBLE_VERTICAL;
         case "-":
           break;
         default:
@@ -172,7 +172,7 @@ export class HashiPuzzle {
         var newNode = new HashiNode(parseInt(inputArray[i]), x, y, nodePos);
         newNodes[y][x] = newNode;
       } else {
-        newNodes[y][x] = new HashiNode(0, x, y, nodePos);
+        newNodes[y][x] = new HashiNode(null, x, y, nodePos);
       }
     }
 

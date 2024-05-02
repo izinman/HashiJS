@@ -1,13 +1,15 @@
 import {
+  Pressable,
   Text,
   View,
-  StyleProp,
   StyleSheet,
-  ViewStyle,
   DimensionValue,
 } from "react-native";
 import { NodePosition } from "./library/NodePosition";
 import { HashiNode } from "./library/HashiNode";
+import EdgeView from "./EdgeView";
+import { LineDirection } from "./library/LineDirection";
+import { HashiEdge } from "./library/HashiEdge";
 
 function GridPointView({
   sideLength,
@@ -21,16 +23,14 @@ function GridPointView({
     <View
       style={{
         ...styles.parent,
-        ...{
-          width: sideLength,
-          height: sideLength,
-        },
+        width: sideLength,
+        height: sideLength,
       }}
     >
       {node.goalNumber && (
-        <View style={styles.node}>
+        <Pressable style={styles.node}>
           <Text style={{ userSelect: "none" }}>{node.goalNumber}</Text>
-        </View>
+        </Pressable>
       )}
 
       {![
@@ -38,16 +38,10 @@ function GridPointView({
         NodePosition.BOTTOM_LEFT,
         NodePosition.FIRST_COLUMN,
       ].includes(node.nodePosition) && (
-        // Left Line
-        <View
-          style={{
-            ...styles.backgroundLine,
-            ...{
-              left: 0,
-              height: 1,
-              width: lineLength,
-            },
-          }}
+        <EdgeView
+          length={lineLength}
+          direction={LineDirection.LEFT}
+          edgeType={HashiEdge.NONE}
         />
       )}
 
@@ -56,16 +50,10 @@ function GridPointView({
         NodePosition.BOTTOM_RIGHT,
         NodePosition.LAST_COLUMN,
       ].includes(node.nodePosition) && (
-        // Right Line
-        <View
-          style={{
-            ...styles.backgroundLine,
-            ...{
-              right: 0,
-              height: 1,
-              width: lineLength,
-            },
-          }}
+        <EdgeView
+          length={lineLength}
+          direction={LineDirection.RIGHT}
+          edgeType={HashiEdge.NONE}
         />
       )}
 
@@ -74,17 +62,10 @@ function GridPointView({
         NodePosition.TOP_RIGHT,
         NodePosition.FIRST_ROW,
       ].includes(node.nodePosition) && (
-        // Up Line
-        <View
-          style={{
-            ...styles.backgroundLine,
-            ...{
-              left: "50%",
-              top: 0,
-              height: lineLength,
-              width: 1,
-            },
-          }}
+        <EdgeView
+          length={lineLength}
+          direction={LineDirection.UP}
+          edgeType={HashiEdge.NONE}
         />
       )}
 
@@ -93,17 +74,10 @@ function GridPointView({
         NodePosition.BOTTOM_LEFT,
         NodePosition.LAST_ROW,
       ].includes(node.nodePosition) && (
-        // Down Line
-        <View
-          style={{
-            ...styles.backgroundLine,
-            ...{
-              left: "50%",
-              bottom: 0,
-              height: lineLength,
-              width: 1,
-            },
-          }}
+        <EdgeView
+          length={lineLength}
+          direction={LineDirection.DOWN}
+          edgeType={HashiEdge.NONE}
         />
       )}
     </View>
