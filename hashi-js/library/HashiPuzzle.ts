@@ -8,7 +8,7 @@ export class HashiPuzzle {
   height: number;
   nodes: HashiNode[][];
   solution: HashiEdge[][];
-  currentEdges: HashiEdge[][];
+  edges: HashiEdge[][];
   constructor(
     width: number,
     height: number,
@@ -23,7 +23,7 @@ export class HashiPuzzle {
     if (inputSolution != "") {
       this.solution = this.parseInputSolution(inputSolution);
     }
-    this.currentEdges = this.initializeEdges();
+    this.edges = this.initializeEdges();
   }
 
   undo() {
@@ -35,13 +35,13 @@ export class HashiPuzzle {
   }
 
   startOver() {
-    this.currentEdges = this.initializeEdges();
+    this.edges = this.initializeEdges();
   }
 
   isSolved(): boolean {
     for (let i = 0; i < this.height; ++i) {
       for (let j = 0; j < this.width; ++j) {
-        if (this.solution[i][j] != this.currentEdges[i][j]) {
+        if (this.solution[i][j] != this.edges[i][j]) {
           return false;
         }
       }
@@ -72,7 +72,7 @@ export class HashiPuzzle {
     }
 
     for (let coord of from.between(to)) {
-      this.currentEdges[coord.x][coord.y] = edgeType;
+      this.edges[coord.x][coord.y] = edgeType;
     }
     // TODO maybe: check if we intersect existing edges and erase them
   }

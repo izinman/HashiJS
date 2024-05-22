@@ -1,10 +1,4 @@
-import {
-  Pressable,
-  Text,
-  View,
-  StyleSheet,
-  DimensionValue,
-} from "react-native";
+import { Pressable, Text, View, StyleSheet } from "react-native";
 import { NodePosition } from "./library/NodePosition";
 import { HashiNode } from "./library/HashiNode";
 import EdgeView from "./EdgeView";
@@ -14,11 +8,49 @@ import { HashiEdge } from "./library/HashiEdge";
 function GridPointView({
   sideLength,
   node,
+  edges,
+  onClick,
 }: {
   sideLength: number;
   node: HashiNode;
+  edges: HashiEdge[][];
+  onClick: (node: HashiNode) => void;
 }) {
-  let lineLength: DimensionValue = node.goalNumber ? "25%" : "50%";
+  const onPress = () => {
+    onClick(node);
+    console.log(node.goalNumber);
+  };
+
+  function getEdgeType(direction: LineDirection) {
+    let edgeType: HashiEdge;
+    if (node.goalNumber == null) edgeType = edges[node.yPos][node.xPos];
+    else if (direction == LineDirection.LEFT)
+      edgeType = edges[node.yPos][node.xPos - 1];
+    else if (direction == LineDirection.RIGHT)
+      edgeType = edges[node.yPos][node.xPos + 1];
+    else if (direction == LineDirection.UP)
+      edgeType = edges[node.yPos - 1][node.xPos];
+    else edgeType = edges[node.yPos + 1][node.xPos];
+
+    if (
+      [HashiEdge.SINGLE_HORIZONTAL, HashiEdge.DOUBLE_HORIZONTAL].includes(
+        edgeType
+      ) &&
+      ![LineDirection.LEFT, LineDirection.RIGHT].includes(direction)
+    )
+      return HashiEdge.NONE;
+    else if (
+      [HashiEdge.SINGLE_VERTICAL, HashiEdge.DOUBLE_VERTICAL].includes(
+        edgeType
+      ) &&
+      ![LineDirection.UP, LineDirection.DOWN].includes(direction)
+    ) {
+      return HashiEdge.NONE;
+    }
+
+    return edgeType;
+  }
+
   return (
     <View
       style={{
@@ -28,7 +60,7 @@ function GridPointView({
       }}
     >
       {node.goalNumber && (
-        <Pressable style={styles.node}>
+        <Pressable onPress={onPress} style={styles.node}>
           <Text style={{ userSelect: "none" }}>{node.goalNumber}</Text>
         </Pressable>
       )}
@@ -39,9 +71,9 @@ function GridPointView({
         NodePosition.FIRST_COLUMN,
       ].includes(node.nodePosition) && (
         <EdgeView
-          length={lineLength}
           direction={LineDirection.LEFT}
-          edgeType={HashiEdge.NONE}
+          edgeType={getEdgeType(LineDirection.LEFT)}
+          isFullLength={node.goalNumber == null}
         />
       )}
 
@@ -51,9 +83,9 @@ function GridPointView({
         NodePosition.LAST_COLUMN,
       ].includes(node.nodePosition) && (
         <EdgeView
-          length={lineLength}
           direction={LineDirection.RIGHT}
-          edgeType={HashiEdge.NONE}
+          edgeType={getEdgeType(LineDirection.RIGHT)}
+          isFullLength={node.goalNumber == null}
         />
       )}
 
@@ -63,9 +95,9 @@ function GridPointView({
         NodePosition.FIRST_ROW,
       ].includes(node.nodePosition) && (
         <EdgeView
-          length={lineLength}
           direction={LineDirection.UP}
-          edgeType={HashiEdge.NONE}
+          edgeType={getEdgeType(LineDirection.UP)}
+          isFullLength={node.goalNumber == null}
         />
       )}
 
@@ -75,9 +107,9 @@ function GridPointView({
         NodePosition.LAST_ROW,
       ].includes(node.nodePosition) && (
         <EdgeView
-          length={lineLength}
           direction={LineDirection.DOWN}
-          edgeType={HashiEdge.NONE}
+          edgeType={getEdgeType(LineDirection.DOWN)}
+          isFullLength={node.goalNumber == null}
         />
       )}
     </View>
@@ -98,11 +130,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  backgroundLine: {
-    position: "absolute",
-    backgroundColor: "black",
-    opacity: 0.4,
+    backgroundColor: "white",
+    zIndex: 1,
   },
 });
 

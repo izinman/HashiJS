@@ -1,7 +1,9 @@
 import { Dimensions, FlatList, View, StyleSheet } from "react-native";
+import { useState } from "react";
 import { HashiPuzzle } from "./library/HashiPuzzle";
 import GridPointView from "./GridPointView";
-import { NodePosition } from "./library/NodePosition";
+import { HashiNode } from "./library/HashiNode";
+import { HashiEdge } from "./library/HashiEdge";
 
 interface Props {
   puzzle: HashiPuzzle;
@@ -10,10 +12,65 @@ interface Props {
 function HashiPuzzleRendered({ puzzle }: Props) {
   let puzzleWidth = puzzle.width;
   let puzzleHeight = puzzle.height;
+  // const [history, setHistory] = useState(
+  //   Array(puzzleHeight)
+  //     .fill("-")
+  //     .map(() => new Array(puzzleWidth).fill("-"))
+  // );
 
   let pointMaxWidth = (Dimensions.get("window").width - 100) / puzzleWidth;
   let pointMaxHeight = (Dimensions.get("window").height - 300) / puzzleHeight;
   let sideLength = Math.min(pointMaxHeight, pointMaxWidth);
+
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [connections, setConnections] = useState(puzzle.edges);
+  // const [nodes, setNodes] = useState(puzzle.nodes);
+
+  function toggleConnectionType(node: HashiNode) {
+    if (selectedNode == null) {
+      setSelectedNode(node);
+      return;
+    }
+    console.log("1");
+
+    if (node == selectedNode) {
+      setSelectedNode(null);
+      return;
+    }
+
+    if (node.xPos != selectedNode.xPos && node.yPos != selectedNode.yPos) {
+      setSelectedNode(node);
+      return;
+    }
+
+    const connectionsCopy = structuredClone(connections);
+    if (node.yPos == selectedNode.yPos) {
+      const start = Math.min(node.xPos, selectedNode.xPos);
+      const end = Math.max(node.xPos, selectedNode.xPos);
+
+      for (let i = start + 1; i < end; i++) {
+        console.log(i);
+        const currentConnectionType = connectionsCopy[node.yPos][i];
+        connectionsCopy[node.yPos][i] = nextConnectionTypeMap(false).get(
+          currentConnectionType
+        );
+      }
+    } else {
+      const start = Math.min(node.yPos, selectedNode.yPos);
+      const end = Math.max(node.yPos, selectedNode.yPos);
+
+      for (let i = start + 1; i < end; i++) {
+        console.log(i);
+        const currentConnectionType = connectionsCopy[i][node.xPos];
+        connectionsCopy[i][node.xPos] = nextConnectionTypeMap(true).get(
+          currentConnectionType
+        );
+      }
+    }
+    console.log(connectionsCopy);
+    setConnections(connectionsCopy);
+    // setSelectedNode(null);
+  }
 
   return (
     <>
@@ -21,7 +78,12 @@ function HashiPuzzleRendered({ puzzle }: Props) {
         <FlatList
           data={puzzle.nodes.flat()}
           renderItem={(point) => (
-            <GridPointView sideLength={sideLength} node={point.item} />
+            <GridPointView
+              onClick={toggleConnectionType}
+              sideLength={sideLength}
+              edges={connections}
+              node={point.item}
+            />
           )}
           numColumns={puzzleWidth}
           scrollEnabled={false}
@@ -39,5 +101,21 @@ const styles = StyleSheet.create({
     marginVertical: 50,
   },
 });
+
+const nextConnectionTypeMap = (isVertical: Boolean) => {
+  if (isVertical) {
+    return new Map<HashiEdge, HashiEdge>([
+      [HashiEdge.NONE, HashiEdge.SINGLE_VERTICAL],
+      [HashiEdge.SINGLE_VERTICAL, HashiEdge.DOUBLE_VERTICAL],
+      [HashiEdge.DOUBLE_VERTICAL, HashiEdge.NONE],
+    ]);
+  } else {
+    return new Map<HashiEdge, HashiEdge>([
+      [HashiEdge.NONE, HashiEdge.SINGLE_HORIZONTAL],
+      [HashiEdge.SINGLE_HORIZONTAL, HashiEdge.DOUBLE_HORIZONTAL],
+      [HashiEdge.DOUBLE_HORIZONTAL, HashiEdge.NONE],
+    ]);
+  }
+};
 
 export default HashiPuzzleRendered;
