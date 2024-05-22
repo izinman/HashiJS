@@ -6,13 +6,13 @@ export class HashiNode {
   yPos: number;
   isFull: boolean;
   hasConnection: boolean[];
-  nodePosition: NodePosition;
-  constructor(goal: number, x: number, y: number, nodePos: NodePosition) {
+  position: NodePosition;
+  constructor(goal: number, x: number, y: number, position: NodePosition) {
     this.goalNumber = goal;
     this.xPos = x;
     this.yPos = y;
     this.isFull = false;
     this.hasConnection = [false, false, false, false];
-    this.nodePosition = nodePos;
+    this.position = position;
   }
 }

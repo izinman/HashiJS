@@ -10,15 +10,16 @@ function GridPointView({
   node,
   edges,
   onClick,
+  isSelectedNode,
 }: {
   sideLength: number;
   node: HashiNode;
   edges: HashiEdge[][];
   onClick: (node: HashiNode) => void;
+  isSelectedNode: Boolean;
 }) {
   const onPress = () => {
     onClick(node);
-    console.log(node.goalNumber);
   };
 
   function getEdgeType(direction: LineDirection) {
@@ -60,8 +61,13 @@ function GridPointView({
       }}
     >
       {node.goalNumber && (
-        <Pressable onPress={onPress} style={styles.node}>
-          <Text style={{ userSelect: "none" }}>{node.goalNumber}</Text>
+        <Pressable
+          onPress={onPress}
+          style={{ ...styles.node, borderWidth: isSelectedNode ? 3 : 1 }}
+        >
+          <Text style={{ fontWeight: isSelectedNode ? "bold" : "normal" }}>
+            {node.goalNumber}
+          </Text>
         </Pressable>
       )}
 
@@ -69,7 +75,7 @@ function GridPointView({
         NodePosition.TOP_LEFT,
         NodePosition.BOTTOM_LEFT,
         NodePosition.FIRST_COLUMN,
-      ].includes(node.nodePosition) && (
+      ].includes(node.position) && (
         <EdgeView
           direction={LineDirection.LEFT}
           edgeType={getEdgeType(LineDirection.LEFT)}
@@ -81,7 +87,7 @@ function GridPointView({
         NodePosition.TOP_RIGHT,
         NodePosition.BOTTOM_RIGHT,
         NodePosition.LAST_COLUMN,
-      ].includes(node.nodePosition) && (
+      ].includes(node.position) && (
         <EdgeView
           direction={LineDirection.RIGHT}
           edgeType={getEdgeType(LineDirection.RIGHT)}
@@ -93,7 +99,7 @@ function GridPointView({
         NodePosition.TOP_LEFT,
         NodePosition.TOP_RIGHT,
         NodePosition.FIRST_ROW,
-      ].includes(node.nodePosition) && (
+      ].includes(node.position) && (
         <EdgeView
           direction={LineDirection.UP}
           edgeType={getEdgeType(LineDirection.UP)}
@@ -105,7 +111,7 @@ function GridPointView({
         NodePosition.BOTTOM_RIGHT,
         NodePosition.BOTTOM_LEFT,
         NodePosition.LAST_ROW,
-      ].includes(node.nodePosition) && (
+      ].includes(node.position) && (
         <EdgeView
           direction={LineDirection.DOWN}
           edgeType={getEdgeType(LineDirection.DOWN)}

@@ -16,7 +16,7 @@ function HashiPuzzleRendered({ puzzle }: Props) {
   //   Array(puzzleHeight)
   //     .fill("-")
   //     .map(() => new Array(puzzleWidth).fill("-"))
-  // );
+  // )
 
   let pointMaxWidth = (Dimensions.get("window").width - 100) / puzzleWidth;
   let pointMaxHeight = (Dimensions.get("window").height - 300) / puzzleHeight;
@@ -31,7 +31,6 @@ function HashiPuzzleRendered({ puzzle }: Props) {
       setSelectedNode(node);
       return;
     }
-    console.log("1");
 
     if (node == selectedNode) {
       setSelectedNode(null);
@@ -49,8 +48,22 @@ function HashiPuzzleRendered({ puzzle }: Props) {
       const end = Math.max(node.xPos, selectedNode.xPos);
 
       for (let i = start + 1; i < end; i++) {
-        console.log(i);
+        if (puzzle.nodes[node.yPos][i].goalNumber != null) {
+          setSelectedNode(node);
+          return;
+        }
+
         const currentConnectionType = connectionsCopy[node.yPos][i];
+        if (
+          ![
+            HashiEdge.NONE,
+            HashiEdge.SINGLE_HORIZONTAL,
+            HashiEdge.DOUBLE_HORIZONTAL,
+          ].includes(currentConnectionType)
+        ) {
+          setSelectedNode(node);
+          return;
+        }
         connectionsCopy[node.yPos][i] = nextConnectionTypeMap(false).get(
           currentConnectionType
         );
@@ -60,16 +73,29 @@ function HashiPuzzleRendered({ puzzle }: Props) {
       const end = Math.max(node.yPos, selectedNode.yPos);
 
       for (let i = start + 1; i < end; i++) {
-        console.log(i);
+        if (puzzle.nodes[i][node.xPos].goalNumber != null) {
+          setSelectedNode(node);
+          return;
+        }
+
         const currentConnectionType = connectionsCopy[i][node.xPos];
+        if (
+          ![
+            HashiEdge.NONE,
+            HashiEdge.SINGLE_VERTICAL,
+            HashiEdge.DOUBLE_VERTICAL,
+          ].includes(currentConnectionType)
+        ) {
+          setSelectedNode(node);
+          return;
+        }
         connectionsCopy[i][node.xPos] = nextConnectionTypeMap(true).get(
           currentConnectionType
         );
       }
     }
-    console.log(connectionsCopy);
+
     setConnections(connectionsCopy);
-    // setSelectedNode(null);
   }
 
   return (
@@ -83,6 +109,7 @@ function HashiPuzzleRendered({ puzzle }: Props) {
               sideLength={sideLength}
               edges={connections}
               node={point.item}
+              isSelectedNode={point.item == selectedNode}
             />
           )}
           numColumns={puzzleWidth}

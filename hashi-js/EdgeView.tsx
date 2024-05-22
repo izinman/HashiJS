@@ -47,7 +47,11 @@ function EdgeView({
   );
 }
 
-const styles = (length: DimensionValue, thickness: number) =>
+const styles = (
+  length: DimensionValue,
+  thickness: number,
+  verticalOffset?: DimensionValue
+) =>
   StyleSheet.create({
     left: {
       left: 0,
@@ -60,13 +64,13 @@ const styles = (length: DimensionValue, thickness: number) =>
       width: length,
     },
     up: {
-      left: "50%",
+      left: verticalOffset,
       top: 0,
       width: thickness,
       height: length,
     },
     down: {
-      left: "50%",
+      left: verticalOffset,
       bottom: 0,
       height: length,
       width: thickness,
@@ -123,14 +127,15 @@ const styles = (length: DimensionValue, thickness: number) =>
 
 const directionStylesMap = (length: DimensionValue, edgeType: HashiEdge) => {
   const thickness = edgeType == HashiEdge.NONE ? 1 : 3;
+  const verticalOffset = edgeType == HashiEdge.NONE ? "50%" : "48%";
   if (
     ![HashiEdge.DOUBLE_HORIZONTAL, HashiEdge.DOUBLE_VERTICAL].includes(edgeType)
   ) {
     return new Map<LineDirection, any>([
       [LineDirection.LEFT, [styles(length, thickness).left]],
       [LineDirection.RIGHT, [styles(length, thickness).right]],
-      [LineDirection.UP, [styles(length, thickness).up]],
-      [LineDirection.DOWN, [styles(length, thickness).down]],
+      [LineDirection.UP, [styles(length, thickness, verticalOffset).up]],
+      [LineDirection.DOWN, [styles(length, thickness, verticalOffset).down]],
     ]);
   } else {
     return new Map<LineDirection, any>([
@@ -150,13 +155,16 @@ const directionStylesMap = (length: DimensionValue, edgeType: HashiEdge) => {
       ],
       [
         LineDirection.UP,
-        [styles(length, thickness).left_up, styles(length, thickness).right_up],
+        [
+          styles(length, thickness).left_up,
+          styles(length, thickness, verticalOffset).right_up,
+        ],
       ],
       [
         LineDirection.DOWN,
         [
           styles(length, thickness).left_down,
-          styles(length, thickness).right_down,
+          styles(length, thickness, verticalOffset).right_down,
         ],
       ],
     ]);
