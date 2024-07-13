@@ -1,9 +1,10 @@
 import { Dimensions, FlatList, View, StyleSheet } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { HashiPuzzle } from "./library/HashiPuzzle";
 import GridPointView from "./GridPointView";
 import { HashiNode } from "./library/HashiNode";
 import { HashiEdge } from "./library/HashiEdge";
+import { PuzzleEdgesContext } from "./PuzzleView";
 
 interface Props {
   puzzle: HashiPuzzle;
@@ -12,19 +13,19 @@ interface Props {
 function HashiPuzzleRendered({ puzzle }: Props) {
   let puzzleWidth = puzzle.width;
   let puzzleHeight = puzzle.height;
-  // const [history, setHistory] = useState(
-  //   Array(puzzleHeight)
-  //     .fill("-")
-  //     .map(() => new Array(puzzleWidth).fill("-"))
-  // )
-
   let pointMaxWidth = (Dimensions.get("window").width - 100) / puzzleWidth;
   let pointMaxHeight = (Dimensions.get("window").height - 300) / puzzleHeight;
   let sideLength = Math.min(pointMaxHeight, pointMaxWidth);
 
   const [selectedNode, setSelectedNode] = useState(null);
-  const [connections, setConnections] = useState(puzzle.edges);
-  // const [nodes, setNodes] = useState(puzzle.nodes);
+  const {
+    puzzleEdges,
+    setPuzzleEdges,
+    puzzleEdgesHistory,
+    setPuzzleEdgesHistory,
+    puzzleEdgesHistoryIndex,
+    setPuzzleEdgesHistoryIndex,
+  } = useContext(PuzzleEdgesContext);
 
   function toggleConnectionType(node: HashiNode) {
     if (selectedNode == null) {
@@ -42,7 +43,7 @@ function HashiPuzzleRendered({ puzzle }: Props) {
       return;
     }
 
-    const connectionsCopy = structuredClone(connections);
+    const connectionsCopy = structuredClone(puzzleEdges);
     if (node.yPos == selectedNode.yPos) {
       const start = Math.min(node.xPos, selectedNode.xPos);
       const end = Math.max(node.xPos, selectedNode.xPos);
@@ -95,7 +96,18 @@ function HashiPuzzleRendered({ puzzle }: Props) {
       }
     }
 
-    setConnections(connectionsCopy);
+    if (puzzleEdgesHistoryIndex != puzzleEdgesHistory.length - 1) {
+      setPuzzleEdgesHistory(
+        puzzleEdgesHistory
+          .slice(0, puzzleEdgesHistoryIndex + 1)
+          .concat([connectionsCopy])
+      );
+    } else {
+      setPuzzleEdgesHistory(puzzleEdgesHistory.concat([connectionsCopy]));
+    }
+
+    setPuzzleEdges(connectionsCopy);
+    setPuzzleEdgesHistoryIndex(puzzleEdgesHistoryIndex + 1);
   }
 
   return (
@@ -107,7 +119,7 @@ function HashiPuzzleRendered({ puzzle }: Props) {
             <GridPointView
               onClick={toggleConnectionType}
               sideLength={sideLength}
-              edges={connections}
+              edges={puzzleEdges}
               node={point.item}
               isSelectedNode={point.item == selectedNode}
             />

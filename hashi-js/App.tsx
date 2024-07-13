@@ -13,12 +13,13 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      <NavigationContainer>
+      <PuzzleView />
+      {/* <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Main Menu" component={Menu} />
           <Stack.Screen name="Puzzle" component={PuzzleView} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
       <StatusBar style="auto" />
     </>
   );

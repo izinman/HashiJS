@@ -1,35 +1,54 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import { HashiPuzzle } from "./library/HashiPuzzle";
+import { PuzzleEdgesContext } from "./PuzzleView";
+import { useContext } from "react";
 
 export function PuzzleMenuBar({ puzzle }: { puzzle: HashiPuzzle }) {
+  const {
+    puzzleEdges,
+    setPuzzleEdges,
+    puzzleEdgesHistory,
+    setPuzzleEdgesHistory,
+    puzzleEdgesHistoryIndex,
+    setPuzzleEdgesHistoryIndex,
+  } = useContext(PuzzleEdgesContext);
   return (
     <>
+      {/* UNDO */}
       <View style={styles.container}>
         <TouchableOpacity
+          disabled={puzzleEdgesHistoryIndex == 0}
           style={styles.button}
           onPress={() => {
-            console.log("Undo on menu bar clicked");
-            puzzle.undo();
+            const newIndex = puzzleEdgesHistoryIndex - 1;
+            setPuzzleEdgesHistoryIndex(newIndex);
+            setPuzzleEdges(puzzleEdgesHistory[newIndex]);
           }}
         >
           <Text style={styles.buttonText}>Undo</Text>
         </TouchableOpacity>
 
+        {/* REDO */}
         <TouchableOpacity
+          disabled={puzzleEdgesHistoryIndex == puzzleEdgesHistory.length - 1}
           style={styles.button}
           onPress={() => {
-            console.log("Redo on menu bar clicked");
-            puzzle.redo();
+            const newIndex = puzzleEdgesHistoryIndex + 1;
+            setPuzzleEdgesHistoryIndex(newIndex);
+            setPuzzleEdges(puzzleEdgesHistory[newIndex]);
           }}
         >
           <Text style={styles.buttonText}>Redo</Text>
         </TouchableOpacity>
 
+        {/* START OVER */}
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            console.log("Start over on menu bar clicked");
-            puzzle.startOver();
+            const initialEdges = puzzle.initialEdges();
+            setPuzzleEdges(initialEdges);
+            setPuzzleEdgesHistory([initialEdges]);
+            setPuzzleEdgesHistoryIndex(0);
           }}
         >
           <Text style={styles.buttonText}>Start over</Text>

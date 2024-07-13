@@ -1,7 +1,35 @@
 import HashiPuzzleRendered from "./HashiPuzzleRendered";
 import { PuzzleMenuBar } from "./PuzzleMenuBar";
 import { StyleSheet, View } from "react-native";
+import { useState, createContext } from "react";
 import { HashiPuzzle } from "./library/HashiPuzzle";
+import { HashiEdge } from "./library/HashiEdge";
+
+interface PuzzleEdgeContextType {
+  puzzleEdges: HashiEdge[][];
+}
+export const PuzzleEdgesContext = createContext(null);
+
+const PuzzleContextProvider = ({ edges, children }) => {
+  const [puzzleEdges, setPuzzleEdges] = useState(edges);
+  const [puzzleEdgesHistory, setPuzzleEdgesHistory] = useState([edges]);
+  const [puzzleEdgesHistoryIndex, setPuzzleEdgesHistoryIndex] = useState(0);
+
+  return (
+    <PuzzleEdgesContext.Provider
+      value={{
+        puzzleEdges,
+        setPuzzleEdges,
+        puzzleEdgesHistory,
+        setPuzzleEdgesHistory,
+        puzzleEdgesHistoryIndex,
+        setPuzzleEdgesHistoryIndex,
+      }}
+    >
+      {children}
+    </PuzzleEdgesContext.Provider>
+  );
+};
 
 export function PuzzleView() {
   var currentPuzzle = HashiPuzzle.createSamplePuzzle();
@@ -10,8 +38,15 @@ export function PuzzleView() {
   return (
     <>
       <View style={styles.container}>
-        <PuzzleMenuBar puzzle={currentPuzzle} />
-        <HashiPuzzleRendered puzzle={currentPuzzle} />
+        <PuzzleContextProvider
+          edges={currentPuzzle.edges}
+          children={
+            <>
+              <PuzzleMenuBar puzzle={currentPuzzle} />
+              <HashiPuzzleRendered puzzle={currentPuzzle} />
+            </>
+          }
+        />
       </View>
     </>
   );

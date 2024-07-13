@@ -23,7 +23,7 @@ export class HashiPuzzle {
     if (inputSolution != "") {
       this.solution = this.parseInputSolution(inputSolution);
     }
-    this.edges = this.initializeEdges();
+    this.edges = this.initialEdges();
   }
 
   undo() {
@@ -32,10 +32,6 @@ export class HashiPuzzle {
 
   redo() {
     console.log("redo on puzzle");
-  }
-
-  startOver() {
-    this.edges = this.initializeEdges();
   }
 
   isSolved(): boolean {
@@ -89,7 +85,7 @@ export class HashiPuzzle {
     return false;
   }
 
-  initializeEdges(): HashiEdge[][] {
+  initialEdges(): HashiEdge[][] {
     let edges = new Array<Array<HashiEdge>>(this.height);
 
     for (let i = 0; i < this.height; ++i) {
